@@ -1,0 +1,355 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define STACK_SIZE 10
+#define OK 1
+#define ERROR -1
+#define STACKINCREMENT 10/*存储空间分配增量*/
+typedef int ElemType;
+typedef int Status;
+1
+2
+3
+4
+5
+6
+7
+8
+9
+栈的结构体
+
+typedef struct SqStack
+{
+    int top;
+    int bottom;
+    ElemType array[STACK_SIZE];
+}SqStack;
+1
+2
+3
+4
+5
+6
+栈的初始化
+
+Status Init_Stack(SqStack *S)
+{
+    S->top = S->bottom =0;
+
+    return OK;
+}
+1
+2
+3
+4
+5
+6
+入栈
+
+Status Push(SqStack *S, ElemType e)//e为待压入的元素
+{
+    int a = 0;
+
+    if(S->top - S->bottom == STACK_SIZE - 1)
+    {
+        printf("This stack is full!\n\n");
+        a = ERROR;
+    }
+    else
+    {
+        S->array[S->top] = e;
+        S->top++;
+        a = OK;
+    }
+    return a;
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+出栈
+
+Status Pop(SqStack *S)
+    int e;
+    if(S->bottom == S->top)
+        printf("This stack is empty!\n\n");
+    e = S->array[(S->top) - 1];
+    S->top--;
+    return e;
+}
+1
+2
+3
+4
+5
+6
+7
+8
+获取栈顶元素
+
+Status GetTop(SqStack *S)
+{
+    int e;
+
+    if(S->bottom == S->top)
+    {
+        printf("The stack is empty!\n\n");
+    }
+    else
+    {
+        S->top--;
+        e = S->array[S->top];
+        S->top++;
+        S->array[S->top] = e;
+    }
+    return e;
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+遍历栈
+
+Status StackLength(SqStack *S)
+{
+    int i;
+    int len = 0;
+
+    if(S->top == S->bottom)
+        printf("This stack is empty!\n\n");
+    else
+    {
+        for(i = 0; i < S->top; i++)
+            len++;
+    }
+    return len;
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+清空栈
+
+Status ClearStack(SqStack *S)
+{
+    S->top = S->bottom;
+    return OK;
+}
+1
+2
+3
+4
+5
+输出栈
+
+void OutPut_Stack(SqStack *S)
+{
+    int i;
+    int len = 0;
+    int j = 0;
+
+    if(S->top == 0)
+        printf("This stack is empty!\n\n");
+    for(i = 0; i < S->top; i++)
+        len++;
+
+    j = len;
+    for(i = len - 1; i >= 0; i--)
+    {
+        printf("第%d个元素为:%d\n\n",j ,S->array[i]);
+        j--;
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+在主函数中调用以上函数
+
+int main()
+{
+    int i;
+    int a;
+    int j = 0;
+    SqStack S;
+    int res1 = 0;//初始化栈的返回值
+    int res2 = 0;//压入栈的返回值
+    int res3 = 0;//获取栈顶元素的返回值
+    int res4 = -1;//弹出栈顶元素的返回值
+    int res6 = 0;//清除栈的返回值
+
+    printf("1.初始化一个栈\n2.压入一个元素\n3.弹出栈顶元素\n4.获取栈的长度\n5.输出站\n6.获取栈顶元素\n7.清空栈\n");
+
+    while(1)
+    {
+        printf("请输入操作编号：");
+        scanf("%d", &i);
+        printf("\n");
+
+        if(i == 1)
+        {
+            //初始化一个栈
+            res1 = Init_Stack(&S);
+            if(res1 == 1)
+                printf("初始化成功\n\n");
+            else
+                printf("初始化失败\n\n");
+            res2 = 0;
+            j = 1;
+        }
+        else if(i == 2)
+        {
+            //压入元素
+            if(j == 0)
+            {
+                printf("Error!\n");
+                printf("Please initialize a stack first!\n");
+            }
+            else
+            {
+                printf("请插入数据：");
+                scanf("%d", &a);
+                printf("\n");
+                res2 = Push(&S, a);
+                if(res2 == 1)
+                    printf("元素压入成功\n\n");
+                else
+                    printf("元素压入失败\n\n");
+                res2 = 0;
+            }
+        }
+        else if(i == 3)
+        {
+            if(j == 0)
+            {
+                printf("Error!\n");
+                printf("Please initialize a stack first!\n");
+            }
+            else
+            {
+                printf("\n-----------弹出栈顶元素-----------\n\n");
+                res4 = Pop(&S);
+                if(res4 != -1)
+                {
+                    printf("栈顶元素弹出成功\n");
+                    printf("栈顶元素为：%d\n", res4);
+                }
+            }
+
+        }
+        else if(i == 4)
+        {
+            if(j == 0)
+            {
+                printf("Error!\n");
+                printf("Please initialize a stack first!\n");
+            }
+            else
+            {
+                printf("\n-----------获取栈的长度-----------\n\n");
+                StackLength(&S);
+            }
+        }
+        else if(i == 5)
+        {
+            if(j == 0)
+            {
+                printf("Error!\n");
+                printf("Please initialize a stack first!\n");
+            }
+            else
+            {
+                printf("\n-----------输出栈-----------\n\n");
+                OutPut_Stack(&S);
+            }
+        }
+        else if(i == 6)
+        {
+            if(j == 0)
+            {
+                printf("Error!\n");
+                printf("Please initialize a stack first!\n");
+            }
+            else
+            {
+                printf("\n-----------获取栈顶元素-----------\n\n");
+                res3 = GetTop(&S);
+                printf("栈顶元素为：%d\n", res3);
+            }
+        }
+        else if(i == 7)
+        {
+            if(j == 0)
+            {
+                printf("Error!\n");
+                printf("Please initialize a stack first!\n");
+            }
+            else
+            {
+                printf("\n-----------清空栈-----------\n\n");
+                //清空栈
+                res6 = ClearStack(&S);
+                if(res6 == OK)
+                    printf("清除成功\n");
+                else
+                    printf("清除失败\n");
+            }
+
+        }
+        else
+        {
+            printf("操作编码错误\n请重新输入\n");
+        }
+    }
+
+    return 0;
+}
